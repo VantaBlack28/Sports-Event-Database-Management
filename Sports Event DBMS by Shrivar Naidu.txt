@@ -1,0 +1,98 @@
+--Creating tables for all entities and relevant relationships:
+
+CREATE TABLE SportsComplex(
+CC Varchar(50) NOT NULL,
+CL Varchar(50) NOT NULL,
+CTO Varchar(50) NOT NULL,
+SportsComplex_PK INT AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE SportsComplexArea(
+Area Varchar(50) NOT NULL,
+SportsComplex_PK INT NOT NULL,
+SportsComplexArea_PK INT AUTO_INCREMENT PRIMARY KEY,
+FOREIGN KEY (SportsComplex_PK) REFERENCES SportsComplex(SportsComplex_PK)
+);
+
+CREATE TABLE Event(
+EPDate date NOT NULL,
+ED Varchar(50) NOT NULL,
+ENOfP Varchar(50) NOT NULL,
+Event_PK INT AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE Official(
+Official_PK INT AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE Officiate(
+Event_PK INT NOT NULL,
+Official_PK INT NOT NULL,
+Officiate_PK INT AUTO_INCREMENT PRIMARY KEY,
+FOREIGN KEY(Event_PK) REFERENCES Event( Event_PK),
+FOREIGN KEY(Official_PK) REFERENCES Official(Official_PK)
+);
+
+CREATE TABLE Hold(
+SportsComplex_PK INT NOT NULL,
+Event_PK INT NOT NULL,
+Hold_PK INT AUTO_INCREMENT primary key,
+foreign key(SportsComplex_PK) references SportsComplex(SportsComplex_PK),
+foreign key(Event_PK) references Event(Event_PK)
+);
+
+-- inserting values into the database:
+INSERT INTO SportsComplex(CC, CL, CTO)
+VALUES 
+('CC0', 'CL0', 'CTO0'),
+('CC1', 'CL1', 'CTO1')
+;
+
+INSERT INTO SportsComplexArea( Area, SportsComplex_PK )
+VALUES
+('Area0', 1),
+('Area1', 2)
+;
+
+INSERT INTO Official(Official_PK)
+VALUES
+(NULL),
+(NULL)
+;
+
+INSERT INTO Event(EPDate, ED, ENOfP)
+VALUES
+('2025-01-01', 'Boxing', '500'),
+('2025-02-01', 'Baseball', '1000')
+;
+
+INSERT INTO Hold(SportsComplex_PK, Event_PK)
+VALUES
+(1, 1),
+(2, 2)
+;
+
+INSERT INTO Officiate(Event_PK, Official_PK)
+VALUES
+(1, 1),
+(2, 2)
+;
+
+-- Using JOIN to retrieve data from the database
+SELECT SportsComplex.CL, Event.EPDate
+FROM SportsComplex
+JOIN Hold ON SportsComplex.SportsComplex_PK = Hold.SportsComplex_PK
+JOIN Event ON Event.Event_PK = Hold.Event_PK
+Where Event.ED like '%Boxing%'
+ORDER BY Event.Event_PK, SportsComplex.SportsComplex_PK
+;
+
+-- Answer for Q3-2 below this line
+SELECT SportsComplex.CL, Official.Official_PK
+FROM SportsComplex
+JOIN Hold ON SportsComplex.SportsComplex_PK = Hold.SportsComplex_PK
+JOIN Event ON Event.Event_PK = Hold.Event_PK
+JOIN Officiate ON Event.Event_PK = Officiate.Event_PK
+JOIN Official ON Official.Official_PK = Officiate.Official_PK
+ORDER BY SportsComplex.SportsComplex_PK, Official.Official_PK
+;
