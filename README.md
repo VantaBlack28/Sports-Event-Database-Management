@@ -1,9 +1,11 @@
 # Sports-Event-Database-Management
 Translating database ER diagram into database tables to insert into and manage for a hypothetical company that specializes in Sporting Event Management.
 
+Done in a text file in SQL language format.
+
 
 File details:
-## Sports Event DBMS by Shrivar Naidu
+## Sports Event DBMS by Shrivar Naidu.txt
 
 - Creating tables for entities such as Event and SportsComplexArea, as well as relationships between entities, using Referential Integrity for accurate capture.
 - Inserting values into the Database.
